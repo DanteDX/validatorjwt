@@ -18,10 +18,32 @@ document.addEventListener('DOMContentLoaded',()=>{
 
     registerForm.addEventListener('submit',e =>{
         e.preventDefault();
-        const body  = {
-            username: e.target.username.value,
-            password: e.target.password.value
+        // const body  = {
+        //     username: e.target.username.value,
+        //     password: e.target.password.value
+        // };
+        const token1 = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImxvZ2ludXNlcm5hbWUiOiJkYW50ZWR4d29sZiJ9LCJpYX';
+        const token2 = 'QiOjE2MDI2MzY3NzEsImV4cCI6MTYwMzAwNjc3MX0.MgxJ0bIx-odiMr246vysZS8w-pEum6VUr9VusCKorB4';
+        const token = token1 + token2;
+        console.log(token);
+        const headers = {
+            'Content-Type':'application/json',
+            'x-auth-token': token
         };
+
+        const verifyToken = async () =>{
+            try{
+                const response = await fetch('http://localhost:3000/token',{
+                    method:'GET',
+                    headers
+                });
+                const data = await response.json();
+                return data;
+            }catch(err){
+                console.log(err.message);
+            }  
+        };
+        verifyToken().then(function(data){console.log(data)});
         
     })
 
@@ -57,6 +79,7 @@ document.addEventListener('DOMContentLoaded',()=>{
                     // console.log(data.errors[0].msg);
                 }else{
                     console.log('Login Sucess');
+                    console.log(data.token);
                 }
                 
             });
